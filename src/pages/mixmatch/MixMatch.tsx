@@ -2,92 +2,76 @@ import TopBar from "../../components/navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Row, Col, Card, Button, Container, Offcanvas } from "react-bootstrap";
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 //chart
-import { IgrLegendModule, IgrDataChartCoreModule, IgrDataChartRadialModule, IgrDataChartRadialCoreModule, IgrDataChartInteractivityModule, IgrDataChartAnnotationModule } from 'igniteui-react-charts';
-import { IgrLegend, IgrDataChart, IgrCategoryAngleAxis, IgrNumericRadiusAxis, IgrRadialAreaSeries, IgrDataToolTipLayer } from 'igniteui-react-charts';
-import { FootballPlayerStatsItem, FootballPlayerStats } from './footballplayerstats';
+import ReactApexChart from "react-apexcharts";
 
-const mods: any[] = [
-  IgrLegendModule,
-  IgrDataChartCoreModule,
-  IgrDataChartRadialModule,
-  IgrDataChartRadialCoreModule,
-  IgrDataChartInteractivityModule,
-  IgrDataChartAnnotationModule,
-];
-mods.forEach((m) => m.register());
+class ApexChart extends React.Component {
+  constructor(props: any) {
+    super(props);
 
-function ChartComponent() {
-  const chartRef = useRef<IgrDataChart>(null);
-  const legendRef = useRef<IgrLegend>(null);
-  const chartData = new FootballPlayerStats();
+    this.state = {
+      series: [
+        {
+          name: "Product A",
+          data: [80, 50, 30, 40, 100, 70],
+        },
+        {
+          name: "Product B",
+          data: [20, 30, 40, 80, 20, 30],
+        },
+      ],
+      options: {
+        chart: {
+          height: 350,
+          type: "radar",
+          dropShadow: {
+            enabled: true,
+            blur: 1,
+            left: 1,
+            top: 1,
+          },
+        },
+        title: {
+          text: "Product C analysis",
+        },
+        stroke: {
+          width: 2,
+        },
+        fill: {
+          opacity: 0.1,
+        },
+        markers: {
+          size: 0,
+        },
+        xaxis: {
+          categories: [
+            "Sales made per month",
+            "Net",
+            "Expected net",
+            "Remaining quantity",
+            "Revenue",
+            "Demand (%)",
+          ],
+        },
+      },
+    };
+  }
 
-  useEffect(() => {
-    const legend = legendRef.current;
-    const chart = chartRef.current;
-  
-    if (chart && legend) {
-      // Use the legend and chart references to perform any necessary operations
-      // For example, you can set the legend reference in the chart:
-      chart.legend = legend;
-    }
-  }, []);
-
-  return (
-    <div className="container sample">
-      {/* <div className="legend-title">Ronaldo vs Messi Player Stats</div> */}
-
-      <div className="legend">
-        <IgrLegend ref={legendRef} orientation="Horizontal" />
+  render() {
+    return (
+      <div id="chart">
+        <ReactApexChart
+          options={this.state.options}
+          series={this.state.series}
+          type="radar"
+          height={500}
+        />
       </div>
-
-      <div className="container fill">
-        <IgrDataChart
-          ref={chartRef}
-          isHorizontalZoomEnabled={false}
-          isVerticalZoomEnabled={false}
-        >
-          <IgrCategoryAngleAxis name="angleAxis" dataSource={chartData} label="attribute" />
-          <IgrNumericRadiusAxis
-            name="radiusAxis"
-            innerRadiusExtentScale={0.1}
-            interval={2}
-            minimumValue={0}
-            maximumValue={10}
-          />
-          <IgrRadialAreaSeries
-            name="RadialAreaSeries1"
-            dataSource={chartData}
-            angleAxisName="angleAxis"
-            valueAxisName="radiusAxis"
-            valueMemberPath="ronaldo"
-            showDefaultTooltip={false}
-            areaFillOpacity={0.5}
-            thickness={3}
-            title="Ronaldo"
-            markerType="Circle"
-          />
-          <IgrRadialAreaSeries
-            name="RadialAreaSeries2"
-            dataSource={chartData}
-            angleAxisName="angleAxis"
-            valueAxisName="radiusAxis"
-            valueMemberPath="messi"
-            showDefaultTooltip={false}
-            areaFillOpacity={0.5}
-            thickness={3}
-            title="Messi"
-            markerType="Circle"
-          />
-          <IgrDataToolTipLayer name="DataToolTipLayer" />
-        </IgrDataChart>
-      </div>
-    </div>
-  );
+    );
+  }
 }
-
 
 function MixMatch() {
   const [show, setShow] = useState(false);
@@ -104,7 +88,6 @@ function MixMatch() {
           <h2>Product A</h2>
           <Card>
             <Card.Title>Test</Card.Title>
-            
             <p>RM 46</p>
             <Button variant="dark">Select product</Button>
           </Card>
@@ -129,16 +112,19 @@ function MixMatch() {
           <Button variant="dark" onClick={handleShow}>
             Check Analysis
           </Button>
-          <Offcanvas show={show} onHide={handleClose}>
+          <Offcanvas
+            show={show}
+            onHide={handleClose}
+            className="custom-offcanvas bg-light text-dark"
+          >
             <Offcanvas.Header closeButton>
               <Offcanvas.Title>Analysis Value</Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>
-              <ChartComponent />
+              <ApexChart />
             </Offcanvas.Body>
           </Offcanvas>
         </Card>
-        
       </Container>
     </>
   );
