@@ -26,53 +26,8 @@ interface IProps {
 const Dashboard = () => {
   const [period, setPeriod] = useState<number>(7);
   const [products, setProducts] = useState<any[]>([]);
+  const [list, setList] = useState<any[]>([]);
   const [value, setValue] = useState<number>(0);
-  const [product, setProduct] = useState<any>();
-
-  useEffect(() => {
-    socket.on("receiveProducts", (data: IProps) => {
-      console.log(data);
-    });
-    socket.on("receiveIDProducts", (data: any) => {
-      setProducts(data);
-      setupChartProduct();
-    });
-  }, [socket]);
-
-  useEffect(() => {
-    socket.emit("getIDProducts");
-  }, []);
-
-  function setupChartProduct() {
-    if (products.length > 0) {
-      setProduct({
-        name: products[value].name,
-        series: [
-          {
-            name: "Daily Sales per Stock",
-            type: "line",
-            data: products[value].sales.dailySales.map(
-              (sale: any) => sale.quantity
-            ),
-            categories: products[value].sales.dailySales.map(
-              (sale: any) => sale.date
-            ),
-          },
-          {
-            name: "Stock Level",
-            type: "line",
-            data: products[value].stock.sku.length,
-            categories: products[value].sku,
-          },
-          {
-            name: "Safety Stock",
-            type: "area",
-          },
-        ],
-      });
-    }
-  }
-
   const [state, setState] = useState<any>({
     series: [
       {
@@ -83,14 +38,12 @@ const Dashboard = () => {
       {
         name: "Stock Level",
         type: "line",
-        data: [3, 2, 8, 5, 9, 9, 12, 29, 12, 27, 9, 35, 23, 39, 17, 32, 27, 35],
+        data: [3, 2, 8, 20, 7, 30, 10, 9, 12, 7, 19, 5, 13, 9, 17, 2, 7, 5],
       },
       {
         name: "Safety Stock",
         type: "area",
-        data: [
-          1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 12, 12, 12, 12, 12, 12, 12, 12, 12,
-        ],
+        data: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 7, 7, 5, 5, 5, 5, 5, 5, 5],
       },
       {
         name: "Exponential Moving Average of Daily Demand",
@@ -125,7 +78,7 @@ const Dashboard = () => {
       annotations: {
         yaxis: [
           {
-            y: 12,
+            y: 8,
             borderColor: "#00E396",
             label: {
               borderColor: "#00E396",
@@ -219,7 +172,6 @@ const Dashboard = () => {
       },
       yaxis: {
         min: 0,
-        max: 40,
         title: {
           text: "Stock (unit)",
         },
@@ -231,6 +183,156 @@ const Dashboard = () => {
       },
     },
   });
+
+  useEffect(() => {
+    socket.on("receiveProducts", (data: any) => {
+      setProducts(data);
+    });
+    socket.on("receiveIDProducts", (data: any) => {
+      setList(data);
+      setupChartProduct();
+    });
+  }, [socket]);
+
+  useEffect(() => {
+    socket.emit("getIDProducts");
+  }, []);
+
+  function setupChartProduct() {
+    if (products.length > 0) {
+      console.log(products[value]);
+      setState({
+        series: [
+          {
+            name: "Daily Sales per Stock",
+            type: "line",
+            data: products[value].sales.dailySales.map(
+              (sale: any) => sale.quantity
+            ),
+            categories: products[value].sales.dailySales.map(
+              (sale: any) => sale.date
+            ),
+          },
+          {
+            name: "Stock Level",
+            type: "line",
+            data: products[value].stock.history.map(
+              (stock: any) => stock.quantity
+            ),
+            categories: products[value].stock.history.map(
+              (stock: any) => stock.date
+            ),
+          },
+          {
+            name: "Safety Stock",
+            type: "area",
+            data: products[value].stock.history.map(
+              (stock: any) => stock.safetyStock
+            ),
+            categories: products[value].stock.history.map(
+              (stock: any) => stock.date
+            ),
+          },
+          {
+            name: "Exponential Moving Average of Daily Demand",
+            data: [], // Placeholder for SMA data
+            type: "line",
+          },
+        ],
+        options: {
+          chart: {
+            height: 350,
+            type: "line",
+            zoom: {
+              enabled: true,
+              type: "x",
+              autoScaleYaxis: true,
+              zoomedArea: {
+                fill: {
+                  color: "#90CAF9",
+                  opacity: 0.4,
+                },
+                stroke: {
+                  color: "#0D47A1",
+                  opacity: 0.4,
+                  width: 1,
+                },
+              },
+            },
+          },
+          //   forecastDataPoints: {
+          //     count: 7,
+          //   },
+          annotations: {
+            yaxis: [
+              {
+                y: products[value].stock.history[0].reorderPoint,
+                borderColor: "#00E396",
+                label: {
+                  borderColor: "#00E396",
+                  style: {
+                    color: "#fff",
+                    background: "#00E396",
+                  },
+                  text: "Reorder Point",
+                },
+              },
+            ],
+          },
+          stroke: {
+            width: 3,
+            curve: "smooth",
+          },
+          xaxis: {
+            type: "datetime",
+            categories: products[value].stock.history.map(
+              (stock: any) => stock.date
+            ),
+            tickAmount: 10,
+            title: {
+              text: "Date",
+            },
+            labels: {
+              formatter: function (value: any, timestamp: any, opts: any) {
+                return opts.dateFormatter(new Date(timestamp), "dd MMM");
+              },
+            },
+          },
+          title: {
+            text: "Stock of product A",
+            align: "left",
+            style: {
+              fontSize: "16px",
+              color: "#666",
+            },
+          },
+          fill: {
+            type: "solid",
+            gradient: {
+              shade: "dark",
+              gradientToColors: ["#FDD835"],
+              shadeIntensity: 1,
+              type: "horizontal",
+              opacityFrom: 1,
+              opacityTo: 1,
+              stops: [0, 100, 100, 100],
+            },
+          },
+          yaxis: {
+            min: 0,
+            title: {
+              text: "Stock (unit)",
+            },
+            labels: {
+              formatter: function (value: any) {
+                return value.toFixed(0);
+              },
+            },
+          },
+        },
+      });
+    }
+  }
 
   function updatePeriod(event: any) {
     setPeriod(event.target.value);
@@ -275,7 +377,7 @@ const Dashboard = () => {
     setupChartProduct();
   }
 
-  return products ? (
+  return list ? (
     <Container>
       <Grid container spacing={2}>
         <Grid item xs={12} md={9}>
@@ -299,7 +401,7 @@ const Dashboard = () => {
                 name: "age",
               }}
             >
-              {products.map((product) => (
+              {list.map((product) => (
                 <option value={product.id}>{product.name}</option>
               ))}
             </Select>
