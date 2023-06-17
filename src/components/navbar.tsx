@@ -8,7 +8,7 @@ function TopBar() {
     <>
       <Navbar expand="lg" bg="dark" data-bs-theme="dark" className="bg-body-tertiary">
         <Container>
-          <Navbar.Brand href="#home">InveConsultor</Navbar.Brand>
+          <Navbar.Brand href="/">InveConsultor</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
