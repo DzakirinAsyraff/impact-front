@@ -8,6 +8,7 @@ import { productAPI } from '../../API/productAPI';
 import { setAllProducts, updateSales, updateStock } from '../../redux/productSlice';
 import { stockAPI } from '../../API/stockAPI';
 import { salesAPI } from '../../API/salesAPI';
+import TopBar from '../../components/navbar';
 
 function ViewProducts() {
   const dispatch = useAppDispatch();
@@ -42,6 +43,7 @@ function ViewProducts() {
 
   return (
     <>
+    <TopBar />
       <div>
         <h1>View Products</h1>
         <Table striped bordered hover>
@@ -67,8 +69,8 @@ function ViewProducts() {
                 <td>{product.sales?.countInStock}</td>
                 <td>
                   {product.sales?.dailySales?.map((sale) => (
-                    <div key={sale.date.toISOString()}>
-                      <p>Date: {sale.date.getDate()}</p>
+                    <div key={sale.date}>
+                      {/* <p>Date: {sale.date.getDate()}</p> */}
                       <p>Quantity: {sale.quantity}</p>
                       <p>Total: {sale.total}</p>
                     </div>

@@ -6,6 +6,7 @@ import { productAPI } from "../../API/productAPI";
 import { setAllProducts } from "../../redux/productSlice";
 import { Link } from "react-router-dom";
 import { Button } from 'react-bootstrap';
+import TopBar from "../../components/navbar";
 
 function ViewSKUs() {
     const [skus, setSKUs] = useState<ISKU[]>([]);
@@ -40,6 +41,7 @@ function ViewSKUs() {
 
     return (
         <>
+        <TopBar/>
         <div>
             <h1>View SKUs</h1>
             {skus.length > 0 ? skus.map((sku:ISKU) => {
