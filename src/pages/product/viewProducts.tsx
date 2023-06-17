@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
@@ -8,14 +8,10 @@ import { productAPI } from '../../API/productAPI';
 import { setAllProducts, updateSales, updateStock } from '../../redux/productSlice';
 import { stockAPI } from '../../API/stockAPI';
 import { salesAPI } from '../../API/salesAPI';
-import TopBar from '../../components/navbar';
-import sortBy from 'sort-by';
 
 function ViewProducts() {
-
-    const [sortConfig, setSortConfig] = useState({ column: "", order: "" });
-    const dispatch = useAppDispatch();
-    const products = useAppSelector((state) => state.product);
+  const dispatch = useAppDispatch();
+  const products = useAppSelector((state) => state.product);
 
   useEffect(() => {
     productAPI
@@ -44,26 +40,14 @@ function ViewProducts() {
       });
   }, []);
 
-  const requestSort = (column: string) => {
-    let order = "asc";
-  
-    // If the same column is clicked again, toggle the sort order
-    if (sortConfig.column === column && sortConfig.order === "asc") {
-      order = "desc";
-    }
-  
-    setSortConfig({ column, order });
-  };
-
   return (
     <>
-      <TopBar/>
       <div>
-        <h1 className='my-4'>View Products</h1>
+        <h1>View Products</h1>
         <Table striped bordered hover>
           <thead>
             <tr>
-              <th onClick={() => requestSort("name")}>Name</th>
+              <th>Name</th>
               <th>Description</th>
               <th>Barcode</th>
               <th>Category</th>
@@ -73,15 +57,7 @@ function ViewProducts() {
             </tr>
           </thead>
           <tbody>
-            {products.products
-            .sort((a:IProduct, b:IProduct) => {
-                if (sortConfig.order === "asc") {
-                  return a[sortConfig.column] > b[sortConfig.column] ? 1 : -1;
-                } else {
-                  return a[sortConfig.column] < b[sortConfig.column] ? 1 : -1;
-                }
-              })
-            .map((product: IProduct) => (
+            {products.products.map((product: IProduct) => (
               <tr key={product._id}>
                 <td>{product.name}</td>
                 <td>{product.description}</td>

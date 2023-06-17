@@ -13,7 +13,13 @@ export const productAPI = {
     addProduct : async (product: IProduct) => {
         const response = await axios.post(`${API_URL}add`, product);
         return response.data;
-    }
+    },
+
+    //get product by name
+    getProductByName: async (name: string) => {
+        const response = await axios.get(`${API_URL}get/${name}`);
+        return response.data;
+    },
 
 }
     
