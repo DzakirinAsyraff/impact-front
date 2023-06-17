@@ -6,30 +6,31 @@ import { IProduct } from '../types/product';
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
 import { productAPI } from '../API/productAPI';
 import { setAllProducts, updateSales, updateStock } from '../redux/productSlice';
-import { stockAPI } from '../API/stockAPI';
 import { salesAPI } from '../API/salesAPI';
-import TopBar from '../components/navbar';
-import sortBy from 'sort-by';
+import axios from 'axios';
+import TopBar from "../components/navbar";
+
+
+const fetchExchangeRate = async () => {
+  try {
+    const response = await axios.get('https://api.exchangerate-api.com/v4/latest/USD');
+    return response.data.rates;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
 
 function ViewProducts() {
-
-    const [sortConfig, setSortConfig] = useState({ column: "", order: "" });
-    const dispatch = useAppDispatch();
-    const products = useAppSelector((state) => state.product);
+  const dispatch = useAppDispatch();
+  const products = useAppSelector((state) => state.product);
+  const [conversionRate, setConversionRate] = useState(1);
 
   useEffect(() => {
     productAPI
       .getAllProducts()
       .then((response) => {
         dispatch(setAllProducts(response));
-        stockAPI
-          .getAllStocks()
-          .then((res_stock) => {
-            dispatch(updateStock(res_stock));
-          })
-          .catch((err_stock) => {
-            console.log(err_stock);
-          });
         salesAPI
           .getAllSales()
           .then((res_sales) => {
@@ -44,60 +45,53 @@ function ViewProducts() {
       });
   }, []);
 
-  const requestSort = (column: string) => {
-    let order = "asc";
-  
-    // If the same column is clicked again, toggle the sort order
-    if (sortConfig.column === column && sortConfig.order === "asc") {
-      order = "desc";
+  useEffect(() => {
+    const fetchConversionRate = async () => {
+      const rates = await fetchExchangeRate();
+      if (rates && rates.MYR) {
+        setConversionRate(rates.MYR);
+      }
+    };
+
+    fetchConversionRate();
+  }, []);
+
+  const convertCurrency = (amount: number | undefined, isUsd: boolean): string => {
+    if (amount === undefined) {
+      return '';
     }
-  
-    setSortConfig({ column, order });
+    
+    const convertedAmount = isUsd ? amount / conversionRate : amount;
+    return convertedAmount.toFixed(2);
   };
+  
 
   return (
     <>
       <TopBar/>
       <div>
-        <h1 className='my-4'>View Products</h1>
+        <h1>Real Time Product Price Exchange Rate</h1>
         <Table striped bordered hover>
           <thead>
             <tr>
-              <th onClick={() => requestSort("name")}>Name</th>
+              <th>Name</th>
               <th>Description</th>
               <th>Barcode</th>
               <th>Category</th>
-              <th>Price</th>
-              <th>Amount Left in Stock</th>
-              <th>Daily Sales</th>
+              <th>Price (MYR)</th>
+              <th>Price (USD)</th>
+   
             </tr>
           </thead>
           <tbody>
-            {products.products
-            .sort((a:IProduct, b:IProduct) => {
-                if (sortConfig.order === "asc") {
-                  return a[sortConfig.column] > b[sortConfig.column] ? 1 : -1;
-                } else {
-                  return a[sortConfig.column] < b[sortConfig.column] ? 1 : -1;
-                }
-              })
-            .map((product: IProduct) => (
+            {products.products.map((product: IProduct) => (
               <tr key={product._id}>
                 <td>{product.name}</td>
                 <td>{product.description}</td>
                 <td>{product.barcode}</td>
                 <td>{product.category}</td>
-                <td>RM {product.sales?.price}</td>
-                <td>{product.sales?.countInStock}</td>
-                <td>
-                  {product.sales?.dailySales?.map((sale) => (
-                    <div key={sale.date.toISOString()}>
-                      <p>Date: {sale.date.getDate()}</p>
-                      <p>Quantity: {sale.quantity}</p>
-                      <p>Total: {sale.total}</p>
-                    </div>
-                  ))}
-                </td>
+                <td>{convertCurrency(product.sales?.price, false)}</td>
+                <td>{convertCurrency(product.sales?.price, true)}</td>
               </tr>
             ))}
           </tbody>
