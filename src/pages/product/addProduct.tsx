@@ -14,10 +14,30 @@ function AddProduct() {
     description: "",
     category: "",
     skuPrefix: "",
+
+    history: [
+      {
+        date: Date.now(),
+        quantity: 0,
+        safetyStock: 0,
+        reservedStock: 0,
+        reorderPoint: 0,
+        reorderQuantity: 0,
+        maximumLeadTime: 0,
+        averageLeadTime: 0,
+      },
+    ],
   });
 
   const [sales, setSales] = useState<ISales>({
     price: 0,
+    dailySales: [
+      {
+        date: Date.now(),
+        quantity: 0,
+        total: 0,
+      },
+    ],
   });
 
   const [product, setProduct] = useState<IProduct>({
@@ -32,9 +52,29 @@ function AddProduct() {
       description: "",
       category: "",
       skuPrefix: "",
+
+      history: [
+        {
+          date: Date.now(),
+          quantity: 0,
+          safetyStock: 0,
+          reservedStock: 0,
+          reorderPoint: 0,
+          reorderQuantity: 0,
+          maximumLeadTime: 0,
+          averageLeadTime: 0,
+        },
+      ],
     },
     sales: {
       price: 0,
+      dailySales: [
+        {
+          date: Date.now(),
+          quantity: 0,
+          total: 0,
+        },
+      ],
     },
   });
 
@@ -90,9 +130,9 @@ function AddProduct() {
 
   return (
     <>
-      <TopBar/>
+      <TopBar />
       <h1 className="my-3">Add Product</h1>
-      <div style={{ marginLeft: "30px", maxWidth: "400px", textAlign: "left"}}>
+      <div style={{ marginLeft: "30px", maxWidth: "400px", textAlign: "left" }}>
         <form onSubmit={handleSubmit}>
           <h2>Product Details</h2>
           <div className="form-group">
