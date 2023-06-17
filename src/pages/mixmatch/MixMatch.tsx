@@ -115,12 +115,12 @@ function MixMatch() {
           <Offcanvas
             show={show}
             onHide={handleClose}
-            className="custom-offcanvas bg-dark text-light"
+            className="custom-offcanvas bg-light text-dark"
           >
             <Offcanvas.Header closeButton>
               <Offcanvas.Title>Analysis Value</Offcanvas.Title>
             </Offcanvas.Header>
-            <Offcanvas.Body className="bg-light">
+            <Offcanvas.Body>
               <ApexChart />
             </Offcanvas.Body>
           </Offcanvas>
