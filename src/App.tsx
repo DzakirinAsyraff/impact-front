@@ -3,6 +3,7 @@ import { Button } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import "./styles/App.css";
 import TopBar from "./components/navbar";
+import Dashboard from "./pages/analytic/dashboard";
 
 function App() {
   return (
@@ -10,11 +11,12 @@ function App() {
       <TopBar />
       <div className="App my-4">
         <header className="App-header">
-          <h1>Select A View</h1>
+          <h1>Dashboard</h1>
         </header>
         <div></div>
         <div className="App-body">
-          <Card style={{ width: "18rem" }}>
+          < Dashboard />
+          {/* <Card style={{ width: "18rem" }}>
             <Card.Body>
               <Card.Title>Customer</Card.Title>
               <Card.Text>View the customer page.</Card.Text>
@@ -37,7 +39,7 @@ function App() {
                 <Button>View SKUs</Button>
               </Link>
             </Card.Body>
-          </Card>
+          </Card> */}
         </div>
       </div>
     </>
