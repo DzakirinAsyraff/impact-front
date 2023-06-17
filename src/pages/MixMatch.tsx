@@ -3,6 +3,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Row, Col, Card, Button, Container, Offcanvas } from "react-bootstrap";
 import { useState } from "react";
+import ReactDOM from 'react-dom/client';
+
+//chart test
+import { IgrLegendModule, IgrDataChartCoreModule, IgrDataChartRadialModule, IgrDataChartRadialCoreModule, IgrDataChartInteractivityModule, IgrDataChartAnnotationModule } from 'igniteui-react-charts';
+import { IgrLegend, IgrDataChart, IgrCategoryAngleAxis, IgrNumericRadiusAxis, IgrRadialAreaSeries, IgrDataToolTipLayer } from 'igniteui-react-charts';
+import { FootballPlayerStatsItem, FootballPlayerStats } from './FootballPlayerStats';
 
 function MixMatch() {
   const [show, setShow] = useState(false);

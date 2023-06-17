@@ -7,6 +7,7 @@ import ViewProducts from './pages/product/viewProducts';
 import AddProduct from './pages/product/addProduct';
 import AddSKU from './pages/sku/addSKU';
 import ViewSKUs from './pages/sku/viewSKUs';
+//import CurrencyDiff from './pages/currencyDiff';
 // import {Customer} from './pages/Customer.tsx';
 // import Management from './pages/Management';
 import {
@@ -15,7 +16,7 @@ import {
   // createHashRouter
 } from "react-router-dom";
 import TopBar from './components/navbar';
-import MixMatch from './pages/MixMatch';
+import MixMatch from './pages/mixmatch/MixMatch';
 // import './styles/index.css'
 import Dashboard from './pages/analytic/dashboard';
 
@@ -60,7 +61,11 @@ const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: <Dashboard/>,
-  }
+  },
+  // {
+  //   path: "/currency-div",
+  //    element: <CurrencyDiff/>,
+  // }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
