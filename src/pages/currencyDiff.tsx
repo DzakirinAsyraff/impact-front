@@ -97,11 +97,6 @@ function ViewProducts() {
           </tbody>
         </Table>
       </div>
-      <div>
-        <Link to="/add-product">
-          <Button>Add Product</Button>
-        </Link>
-      </div>
     </>
   );
 }
