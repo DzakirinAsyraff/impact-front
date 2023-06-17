@@ -3,14 +3,21 @@ import ReactDOM from 'react-dom/client'
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import App from './App'
-import Customer from './pages/Customer';
-import Management from './pages/Management';
+import ViewProducts from './pages/product/viewProducts';
+import AddProduct from './pages/product/addProduct';
+import AddSKU from './pages/sku/addSKU';
+import ViewSKUs from './pages/sku/viewSKUs';
+// import {Customer} from './pages/Customer.tsx';
+// import Management from './pages/Management';
 import {
   createBrowserRouter,
   RouterProvider,
   // createHashRouter
 } from "react-router-dom";
-import './styles/index.css'
+import TopBar from './components/navbar';
+import MixMatch from './pages/MixMatch';
+// import './styles/index.css'
+import Dashboard from './pages/analytic/dashboard';
 
 const router = createBrowserRouter([
   {
@@ -18,13 +25,42 @@ const router = createBrowserRouter([
     element: <App/>,
   },
   {
-    path: "/customer",
-    element: <Customer/>,
+    path: "/view-products",
+    element: <ViewProducts/>,
   },
   {
-    path: "/management",
-    element: <Management/>,
+    path: "/add-product",
+    element: <AddProduct/>,
   },
+  {
+    path: "/add-sku",
+    element: <AddSKU/>,
+  },
+  {
+    path: "/view-skus",
+    element: <ViewSKUs/>,
+  },
+  {
+    path: "/navbar",
+    element: <TopBar/>,
+  },
+  {
+    path: "/mixmatch",
+    element: <MixMatch/>,
+  },
+  // {
+  //   path: "/customer",
+  //   element: <Customer/>,
+  // },
+  // {
+  //   path: "/management",
+  //   element: <Management/>,
+  // },
+
+  {
+    path: "/dashboard",
+    element: <Dashboard/>,
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
