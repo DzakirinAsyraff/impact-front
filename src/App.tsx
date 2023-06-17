@@ -1,45 +1,47 @@
-import { Link } from 'react-router-dom';
-import { Button, Card } from 'react-bootstrap';
-import './styles/App.css';
+import { Link } from "react-router-dom";
+import { Button } from "react-bootstrap";
+import Card from "react-bootstrap/Card";
+import "./styles/App.css";
+import TopBar from "./components/navbar";
 
 function App() {
-
   return (
     <>
-      <div className="App">
+      <TopBar />
+      <div className="App my-4">
         <header className="App-header">
-          <h1>Select A View</h1> 
+          <h1>Select A View</h1>
         </header>
-        <div>
-    </div>
+        <div></div>
         <div className="App-body">
-          <Card style={{ width: '18rem' }}>
+          <Card style={{ width: "18rem" }}>
             <Card.Body>
               <Card.Title>Customer</Card.Title>
-              <Card.Text>
-                View the customer page.
-              </Card.Text>
+              <Card.Text>View the customer page.</Card.Text>
               <Link to="/customer">
-                <Button variant="primary">Customer</Button>
+                <Button>Customer</Button>
               </Link>
             </Card.Body>
           </Card>
-          <Card style={{ width: '18rem' }}>
+          <Card style={{ width: "18rem" }}>
             <Card.Body>
               <Card.Title>Management</Card.Title>
-              <Card.Text>
-                View the management page.
-              </Card.Text>
+              <Card.Text>View the management page.</Card.Text>
               <Link to="/management">
-                <Button variant="primary">Management</Button>
+                <Button>Management</Button>
+              </Link>
+              <Link to="/view-products">
+                <Button>View Products</Button>
+              </Link>
+              <Link to="/view-skus">
+                <Button>View SKUs</Button>
               </Link>
             </Card.Body>
           </Card>
+        </div>
       </div>
-    </div>
     </>
   );
 }
 
 export default App;
-
