@@ -6,19 +6,22 @@ import React, { useState, useRef, useEffect } from "react";
 
 //chart
 import ReactApexChart from "react-apexcharts";
+import { productAPI } from "../../API/productAPI";
+import { setAProduct } from "../../redux/productSlice";
+import { useAppDispatch } from "../../hooks/useRedux";
 
 class ApexChart extends React.Component {
-  constructor(props: any) {
+  constructor(props : any) {
     super(props);
 
     this.state = {
       series: [
         {
-          name: "Product A",
+          name: "Apple Iphone 14",
           data: [80, 50, 30, 40, 100, 70],
         },
         {
-          name: "Product B",
+          name: "Apple Iphone 13",
           data: [20, 30, 40, 80, 20, 30],
         },
       ],
@@ -75,9 +78,63 @@ class ApexChart extends React.Component {
 
 function MixMatch() {
   const [show, setShow] = useState(false);
+  const [productName, setProductName] = useState('');
+  const [selectedProductA, setSelectedProductA] = useState<any>(null);
+  const [selectedProductB, setSelectedProductB] = useState<any>(null);
+  const dispatch = useAppDispatch();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  //product A handle select
+  const handleProductSelectA = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const name = event.target.value;
+    setProductName(name);
+    console.log(name);
+
+    // Get the selected product information and update the selectedProduct state
+    productAPI
+      .getProductByName(name)
+      .then((response) => {
+        setSelectedProductA(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  //product B handle select
+  const handleProductSelectB = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const name = event.target.value;
+    setProductName(name);
+
+    // Get the selected product information and update the selectedProduct state
+    productAPI
+      .getProductByName(name)
+      .then((response) => {
+        setSelectedProductB(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    if (productName !== '') {
+      productAPI
+        .getProductByName(productName)
+        .then((response) => {
+          dispatch(setAProduct(response));
+          setSelectedProductA(response);
+          setSelectedProductB(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      console.log('No');
+    }
+  }, [productName, dispatch]);
 
   return (
     <>
@@ -87,9 +144,16 @@ function MixMatch() {
         <Col md={4}>
           <h2>Product A</h2>
           <Card>
-            <Card.Title>Test</Card.Title>
-            <p>RM 46</p>
-            <Button variant="dark">Select product</Button>
+            <Card.Title>{selectedProductA?.name}</Card.Title>
+            <p>Select your product</p>
+            <select value={productName} onChange={handleProductSelectA}>
+              <option value="">Select product</option>
+              <option value="Apple Iphone 13">Apple Iphone 13</option>
+              <option value="Apple Iphone 14">Apple Iphone 14</option>
+            </select>
+            <Button variant="dark" onClick={() => setSelectedProductA(selectedProductA)} className="my-4">
+              Show Product Information
+            </Button>
           </Card>
         </Col>
         <Col md={4} className="my-5">
@@ -98,9 +162,16 @@ function MixMatch() {
         <Col md={4}>
           <h2>Product B</h2>
           <Card>
-            <Card.Title>Test</Card.Title>
-            <p>RM 50</p>
-            <Button variant="dark">Select product</Button>
+            <Card.Title>{selectedProductB?.name}</Card.Title>
+            <p>Select your product</p>
+            <select value={productName} onChange={handleProductSelectB}>
+              <option value="">Select product</option>
+              <option value="Apple Iphone 13">Apple Iphone 13</option>
+              <option value="Apple Iphone 14">Apple Iphone 14</option>
+            </select>
+            <Button variant="dark" onClick={() => setSelectedProductB(selectedProductB)} className="my-4">
+              Show Product Information
+            </Button>
           </Card>
         </Col>
       </Row>
@@ -121,7 +192,7 @@ function MixMatch() {
               <Offcanvas.Title>Analysis Value</Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>
-              <ApexChart />
+              <ApexChart productName={productName} />
             </Offcanvas.Body>
           </Offcanvas>
         </Card>

@@ -16,9 +16,9 @@ import {
   // createHashRouter
 } from "react-router-dom";
 import TopBar from './components/navbar';
-import MixMatch from './pages/mixmatch/MixMatch';
 // import './styles/index.css'
 import Dashboard from './pages/analytic/dashboard';
+import MixMatch from './pages/mixmatch/MixMatch';
 
 const router = createBrowserRouter([
   {
