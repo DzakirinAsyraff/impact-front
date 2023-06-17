@@ -43,7 +43,7 @@ const Dashboard = () => {
       {
         name: "Safety Stock",
         type: "area",
-        data: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 7, 7, 5, 5, 5, 5, 5, 5, 5],
+        data: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 7, 7, 5, 5, 5, 2, 5, 5, 1],
       },
       {
         name: "Exponential Moving Average of Daily Demand",
@@ -78,7 +78,7 @@ const Dashboard = () => {
       annotations: {
         yaxis: [
           {
-            y: 8,
+            y: 6,
             borderColor: "#00E396",
             label: {
               borderColor: "#00E396",
@@ -396,7 +396,7 @@ const Dashboard = () => {
             <Select
               native
               value={value}
-              onChange={handleChange}
+              //   onChange={handleChange}
               inputProps={{
                 name: "age",
               }}
@@ -432,6 +432,77 @@ const Dashboard = () => {
                 30
               </Button>
             </ButtonGroup>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} md={12}>
+          <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
+            <Typography variant="h6">Analysis Stock</Typography>
+            <Grid container sx={{ p: 5 }} spacing={3}>
+              <Grid item xs={12} md={6}>
+                <Paper
+                  elevation={3}
+                  sx={{ p: 2, display: "flex", flexDirection: "column" }}
+                >
+                  <Typography variant="h6">Stock Level</Typography>
+                  <Typography variant="h6">5</Typography>
+                  <Typography variant="subtitle1" color="red">
+                    Too Low and the safety stock is not enough
+                  </Typography>
+                </Paper>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Paper
+                  elevation={3}
+                  sx={{ p: 2, display: "flex", flexDirection: "column" }}
+                >
+                  <Typography variant="h6">Stockout</Typography>
+                  <Typography variant="h6" color="yellow">
+                    5% Chance
+                  </Typography>
+                  <Typography variant="subtitle1">Need to reorder</Typography>
+                </Paper>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Paper
+                  elevation={3}
+                  sx={{ p: 2, display: "flex", flexDirection: "column" }}
+                >
+                  <Typography variant="h6">Stock Category</Typography>
+                  <Typography variant="h6">B</Typography>
+                  <Typography variant="subtitle1">
+                    Expected new model
+                  </Typography>
+                </Paper>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Paper
+                  elevation={3}
+                  sx={{ p: 2, display: "flex", flexDirection: "column" }}
+                >
+                  <Typography variant="h6">Stockout</Typography>
+                  <Typography variant="h6">1 time in 3 months</Typography>
+                  <Typography variant="subtitle1">Good</Typography>
+                </Paper>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Paper
+                  elevation={3}
+                  sx={{ p: 2, display: "flex", flexDirection: "column" }}
+                >
+                  <Typography variant="h6">Miss best reorder date</Typography>
+                  <Typography variant="h6">3 times</Typography>
+                </Paper>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Paper
+                  elevation={3}
+                  sx={{ p: 2, display: "flex", flexDirection: "column" }}
+                >
+                  <Typography variant="h6">Late reorder date</Typography>
+                  <Typography variant="h6">2 times</Typography>
+                </Paper>
+              </Grid>
+            </Grid>
           </Paper>
         </Grid>
       </Grid>
