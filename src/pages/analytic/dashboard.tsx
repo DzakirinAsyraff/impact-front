@@ -10,6 +10,7 @@ import {
 import { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 import { socket } from "../../socket";
+import TopBar from "../../components/navbar";
 
 interface IProps {
   name: string;
@@ -379,6 +380,8 @@ const Dashboard = () => {
 
   return list ? (
     <Container>
+      <TopBar/>
+      <h2 className="my-4">Dashboard</h2>
       <Grid container spacing={2}>
         <Grid item xs={12} md={9}>
           <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
