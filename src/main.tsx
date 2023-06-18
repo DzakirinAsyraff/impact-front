@@ -7,7 +7,7 @@ import ViewProducts from './pages/product/viewProducts';
 import AddProduct from './pages/product/addProduct';
 import AddSKU from './pages/sku/addSKU';
 import ViewSKUs from './pages/sku/viewSKUs';
-//import CurrencyDiff from './pages/currencyDiff';
+import CurrencyDiff from './pages/currencyDiff';
 // import {Customer} from './pages/Customer.tsx';
 // import Management from './pages/Management';
 import {
@@ -62,10 +62,10 @@ const router = createBrowserRouter([
     path: "/dashboard",
     element: <Dashboard/>,
   },
-  // {
-  //   path: "/currency-div",
-  //    element: <CurrencyDiff/>,
-  // }
+  {
+    path: "/currency",
+     element: <CurrencyDiff/>,
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(

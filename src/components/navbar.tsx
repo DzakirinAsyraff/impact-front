@@ -26,6 +26,8 @@ function TopBar() {
                 </NavDropdown.Item>
               </NavDropdown>
               <Nav.Link href="/mixmatch">Mix and Match</Nav.Link>
+              <Nav.Link href="/dashboard">Dashboard</Nav.Link>
+              <Nav.Link href="/currency">Currency</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
