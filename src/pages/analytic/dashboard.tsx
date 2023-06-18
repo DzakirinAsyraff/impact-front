@@ -151,7 +151,7 @@ const Dashboard = () => {
         },
       },
       title: {
-        text: "Stock of product A",
+        text: "Stock of Iphone 13",
         align: "left",
         style: {
           fontSize: "16px",
@@ -299,7 +299,7 @@ const Dashboard = () => {
             },
           },
           title: {
-            text: "Stock of product A",
+            text: "Stock of Iphone 13",
             align: "left",
             style: {
               fontSize: "16px",
